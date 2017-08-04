@@ -1,30 +1,38 @@
 import React from 'react';
-import { Scene, Router, Actions } from 'react-native-router-flux';
+import {Scene, Router, Reducer, Actions} from 'react-native-router-flux';
 import FirstScreen from './FirstScreen';
 import SecondScreen from './SecondScreen';
 import QuickenData from './QuickenData';
-const RouterComponent = () => {
-    const refreshOnBack = () => {
-        QuickenData.getInstance().array.pop();
-        Actions.pop();
-        QuickenData.getInstance().object = QuickenData.getInstance().array[QuickenData.getInstance().array.length - 1];
-    }
-  return (
-    <Router sceneStyle={{ paddingTop: 65 }}>
-        <Scene
-            key="firstScreen"
-            component={FirstScreen}
-            title="First Screen"
-        />
 
-        <Scene
-          key="secondScreen"
-          component={SecondScreen}
-          title="Second Screen"
-          onBack={refreshOnBack}
-        />
-    </Router>
-  );
+const reducerCreate = params => {
+    const defaultReducer = new Reducer(params);
+    return (state, action) => {
+        if(action.type !== null && action.type === 'Navigation/BACK') {
+            QuickenData.getInstance().array.pop();
+            QuickenData.getInstance().title = QuickenData.getInstance().array[QuickenData.getInstance().array.length - 1];
+        }
+        return defaultReducer(state, action);
+    };
+};
+
+const RouterComponent = () => {
+    return (
+        <Router createReducer={reducerCreate} sceneStyle={{paddingTop: 65}}>
+            <Scene key="root">
+                <Scene
+                    key="firstScreen"
+                    component={FirstScreen}
+                    title="First Screen"
+                />
+
+                <Scene
+                    key="secondScreen"
+                    component={SecondScreen}
+                    title="Second Screen"
+                />
+            </Scene>
+        </Router>
+    );
 };
 
 export default RouterComponent;

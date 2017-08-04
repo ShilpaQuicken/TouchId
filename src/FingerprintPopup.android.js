@@ -51,7 +51,7 @@ class FingerprintPopup extends Component {
 
           <Image
             style={styles.logo}
-            source={require('./assets/finger_print.png')}
+            source={require('./Resources/finger_print.png')}
           />
 
           <Text style={styles.heading}>

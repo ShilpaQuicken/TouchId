@@ -115,7 +115,6 @@ export default class BaseLayout extends Component {
     }
 
    render() {
-
         return (
             <View style={[styles.container]}>
                 {this.renderParent()}
